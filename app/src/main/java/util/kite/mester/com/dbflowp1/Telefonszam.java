@@ -18,4 +18,14 @@ public class Telefonszam extends BaseModel {
     @Column(columnType = Column.FOREIGN_KEY, references = {@ForeignKeyReference(columnName = "Contact", columnType = Integer.class, foreignColumnName = "azon")})
     Contact contact;
 
+    // A számok mentése egyetlen formában történhet: +36(illetve ország elõhívó) 52555555 illetve mobil száoknál +36301234567
+    // Mindegy milyen formában írja be valaki, jó formában kell elmenteni
+    // Ha + vagy 00 taggal kezdõdik és nem 36-al folytatódik akkor ellenörzés és átalakítás nélkül elmentem a számot.
+    public void setSzam(String szam) {
+        if ((szam.substring(0).equals("+")) || (szam.substring(0,1).equals("00"))){
+            this.szam = szam;
+        }
+
+        this.szam = szam;
+    }
 }
