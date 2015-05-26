@@ -1,6 +1,7 @@
 package util.kite.mester.com.dbflowp1;
 
 import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -14,8 +15,9 @@ import java.util.List;
 @Table(databaseName = Ddfp1db.NAME)
 public class Contact extends BaseModel {
 
-    @Column(columnType = Column.PRIMARY_KEY)
-    public int azon;
+    @Column
+    @PrimaryKey(autoincrement = true)
+    public Long id;
 
     @Column
     public String nev;
@@ -24,12 +26,15 @@ public class Contact extends BaseModel {
 
     public List<Telefonszam> getTelefonszamok() {
         if(telefonszamok == null){
-            telefonszamok = Select.all(Telefonszam.class, Condition.column(Telefonszam$Table.CONTACT_CONTACT).is(azon));
+       //     telefonszamok = Select.all(Telefonszam.class, Condition.column(Telefonszam$Table.CONTACT_CONTACT).is(azon));
             //telefonszamok = Select.all(Telefonszam.class, Condition.column(Contact$Table.azon).is(azon));
 
 
             //Condition.column(TestManyModels$Table.TESTMODELNAME).is(name));
         }
         return telefonszamok;
+
     }
+
+
 }

@@ -2,9 +2,12 @@ package util.kite.mester.com.dbflowp1;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.Database;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
 /**
  * Created by Joco on 2015.04.26..
@@ -12,15 +15,17 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 @Table(databaseName = Ddfp1db.NAME)
 public class Telefonszam extends BaseModel {
 
-    @Column(columnType = Column.PRIMARY_KEY)
+    @Column
+    @PrimaryKey
     String szam;
 
-    @Column(columnType = Column.FOREIGN_KEY, references = {@ForeignKeyReference(columnName = "Contact", columnType = Integer.class, foreignColumnName = "azon")})
-    Contact contact;
+    @Column
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "contact_id",columnType = Long.class, foreignColumnName = "id")},saveForeignKeyModel = false)
+    ForeignKeyContainer<Contact> contact;
 
-    // A sz·mok mentÈse egyetlen form·ban tˆrtÈnhet: +36(illetve orsz·g elıhÌvÛ) 52555555 illetve mobil sz·okn·l +36301234567
-    // Mindegy milyen form·ban Ìrja be valaki, jÛ form·ban kell elmenteni
-    // Ha + vagy 00 taggal kezdıdik Ès nem 36-al folytatÛdik akkor ellenˆrzÈs Ès ·talakÌt·s nÈlk¸l elmentem a sz·mot.
+    // A sz√°mok ment√©se egyetlen form√°ban t√∂rt√©nhet: +36(illetve orsz√°g el≈ëh√≠v√≥) 52555555 illetve mobil sz√°okn√°l +36301234567
+    // Mindegy milyen form√°ban √≠rja be valaki, j√≥ form√°ban kell elmenteni
+    // Ha + vagy 00 taggal kezd≈ëdik √©s nem 36-al folytat√≥dik akkor ellen√∂rz√©s √©s √°talak√≠t√°s n√©lk√ºl elmentem a sz√°mot.
     public void setSzam(String szam) {
         if ((szam.substring(0).equals("+")) || (szam.substring(0,1).equals("00"))){
             this.szam = szam;
@@ -28,4 +33,16 @@ public class Telefonszam extends BaseModel {
 
         this.szam = szam;
     }
+
+    public String getSzam() {
+        return szam;
+    }
+
+   /* public Contact getContact() {
+        return contact;
+    }
+
+   // public void setContact(Contact contact) {
+        this.contact = contact;
+    }*/
 }
