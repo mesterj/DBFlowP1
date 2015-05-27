@@ -38,5 +38,28 @@ public class Contact extends BaseModel {
 
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNev() {
+        return nev;
+    }
+
+    public void setNev(String nev) {
+        this.nev = nev;
+    }
+
+    public void setTelefonszamok(List<Telefonszam> telefonszamok) {
+        this.telefonszamok = telefonszamok;
+    }
+
+    @Override
+    public String toString() {
+        return  nev;
+    }
 }

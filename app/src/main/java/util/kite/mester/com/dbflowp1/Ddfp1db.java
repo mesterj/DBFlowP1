@@ -10,6 +10,6 @@ public class Ddfp1db  {
 
    public static final String NAME= "DbFlowP1";
 
-    public static  final int VERSION = 1;
+    public static  final int VERSION = 2;
 }
 

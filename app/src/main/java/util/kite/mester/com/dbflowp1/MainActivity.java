@@ -2,16 +2,48 @@ package util.kite.mester.com.dbflowp1;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
+import java.security.cert.CertificateParsingException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends Activity {
+
+    EditText etContact;
+    EditText etTelefon;
+    Spinner spnContacts;
+    ArrayAdapter<Contact> myAdapter;
+    List<Contact> contacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        spnContacts = (Spinner) findViewById(R.id.spnContact);
+        //List<Contact> nevek = new Select(ColumnAlias.column(Contact$Table.NEV)).from(Contact.class).queryList();
+        contacts = new Select().from(Contact.class).queryList();
+        Log.i("LOGTAG","Contacts mérete: " + contacts.size());
+        List<Telefonszam> telefonszams = new Select().from(Telefonszam.class).queryList();
+        Log.i("LOGTAG","Telefonszámok: "  + telefonszams.size());
+
+
+        myAdapter = new ArrayAdapter<Contact>(this, R.layout.support_simple_spinner_dropdown_item,contacts);
+
+        spnContacts.setAdapter(myAdapter);
+        etContact = (EditText) findViewById(R.id.etContactNev);
+        etTelefon = (EditText) findViewById(R.id.etTelefonszam);
     }
 
     @Override
@@ -35,4 +67,42 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void onClick(View v){
+        switch (v.getId()){
+            case (R.id.btnSaveContact):
+            Contact c = new Contact();
+                c.setNev(etContact.getText().toString());
+                ArrayList<Telefonszam> telefonszamList = new ArrayList<Telefonszam>();
+                Telefonszam t1 = new Telefonszam();
+                String tszam = etTelefon.getText().toString();
+                if(!tszam.equals(null)){
+                    t1.setSzam(tszam);
+                    t1.save();
+                    telefonszamList.add(t1);
+                    c.setTelefonszamok(telefonszamList);
+                }
+                else {
+                }
+                c.save();
+                Toast.makeText(v.getContext(),"Az új contact száma: "+ c.getTelefonszamok().get(0),Toast.LENGTH_LONG).show();
+                reloadAdapter();
+                break;
+            case (R.id.btnTelefonszam):
+                Telefonszam t = new Telefonszam();
+                t.setSzam(etTelefon.getText().toString());
+                t.save();
+                break;
+            default:
+
+        }
+    }
+
+    void reloadAdapter(){
+        contacts.clear();
+        contacts = new Select().from(Contact.class).queryList();
+        Log.i("LOGTAG","NEW SELECT loaded new size: " + contacts.size()  );
+        myAdapter.notifyDataSetChanged();
+    }
+
 }
