@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -89,6 +90,20 @@ public class MainActivity extends Activity {
                 reloadAdapter();
                 break;
             case (R.id.btnTelefonszam):
+                Long itempos = spnContacts.getItemIdAtPosition(spnContacts.getSelectedItemPosition());
+                Contact cleker = new Select().from(Contact.class).where(Condition.column(Contact$Table.ID).is(itempos+1)).querySingle();
+                Log.i("DBFLOW.TALALATNEVE:",cleker.getNev());
+                // Itt lesz az igazi adatbázisból való telefonszám visszakérés
+                List<Telefonszam> contactSzamok = cleker.getTelefonszamok();
+                for(Telefonszam t: contactSzamok){
+                    Log.i("DBFLOW.SZAMOK",t.toString());
+                }
+
+                if (contactSzamok!=null) {
+                    //Toast.makeText(v.getContext(), "vaA telefonszám: "+ contactSzamok.get(0),Toast.LENGTH_LONG).show();
+                    Toast.makeText(v.getContext(),"valami",Toast.LENGTH_LONG).show();
+                    break;
+                }
                 Telefonszam t = new Telefonszam();
                 t.setSzam(etTelefon.getText().toString());
                 t.save();
