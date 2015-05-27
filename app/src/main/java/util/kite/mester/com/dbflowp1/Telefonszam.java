@@ -16,18 +16,24 @@ import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 public class Telefonszam extends BaseModel {
 
     @Column
-    @PrimaryKey
+    @PrimaryKey(autoincrement = true)
+    Long id;
+
+    @Column
     String szam;
 
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "contact_id",columnType = Long.class, foreignColumnName = "id")},saveForeignKeyModel = false)
+    @ForeignKey(references = {@ForeignKeyReference(columnName = "contact_id",
+            columnType = Long.class,
+            foreignColumnName = "id")},
+            saveForeignKeyModel = false)
     ForeignKeyContainer<Contact> contact;
 
     // A számok mentése egyetlen formában történhet: +36(illetve ország előhívó) 52555555 illetve mobil száoknál +36301234567
     // Mindegy milyen formában írja be valaki, jó formában kell elmenteni
     // Ha + vagy 00 taggal kezdődik és nem 36-al folytatódik akkor ellenörzés és átalakítás nélkül elmentem a számot.
     public void setSzam(String szam) {
-        if ((szam.substring(0).equals("+")) || (szam.substring(0,1).equals("00"))){
+        if ((szam.substring(0).equals("+")) || (szam.substring(0, 1).equals("00"))) {
             this.szam = szam;
         }
 
@@ -38,11 +44,19 @@ public class Telefonszam extends BaseModel {
         return szam;
     }
 
-   /* public Contact getContact() {
+    public ForeignKeyContainer<Contact> getContact() {
         return contact;
     }
 
-   // public void setContact(Contact contact) {
+    public void setContact(ForeignKeyContainer<Contact> contact) {
         this.contact = contact;
-    }*/
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
