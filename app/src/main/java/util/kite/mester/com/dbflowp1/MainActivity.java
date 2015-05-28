@@ -12,10 +12,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import java.security.cert.CertificateParsingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,14 +91,14 @@ public class MainActivity extends Activity {
                 Long itempos = spnContacts.getItemIdAtPosition(spnContacts.getSelectedItemPosition());
                 Contact cleker = new Select().from(Contact.class).where(Condition.column(Contact$Table.ID).is(itempos+1)).querySingle();
                 Log.i("DBFLOW.TALALATNEVE:",cleker.getNev());
-                // Itt lesz az igazi adatbázisból való telefonszám visszakérés
+                // Itt lesz az igazi adatbĂˇzisbĂłl valĂł telefonszĂˇm visszakĂ©rĂ©s
                 List<Telefonszam> contactSzamok = cleker.getTelefonszamok();
                 for(Telefonszam t: contactSzamok){
                     Log.i("DBFLOW.SZAMOK",t.toString());
                 }
 
                 if (contactSzamok!=null) {
-                    //Toast.makeText(v.getContext(), "vaA telefonszám: "+ contactSzamok.get(0),Toast.LENGTH_LONG).show();
+                    //Toast.makeText(v.getContext(), "vaA telefonszĂˇm: "+ contactSzamok.get(0),Toast.LENGTH_LONG).show();
                     Toast.makeText(v.getContext(),"valami",Toast.LENGTH_LONG).show();
                     break;
                 }
@@ -116,8 +114,10 @@ public class MainActivity extends Activity {
     void reloadAdapter(){
         contacts.clear();
         contacts = new Select().from(Contact.class).queryList();
+        myAdapter = new ArrayAdapter<Contact>(this, R.layout.support_simple_spinner_dropdown_item,contacts);
         Log.i("LOGTAG","NEW SELECT loaded new size: " + contacts.size()  );
         myAdapter.notifyDataSetChanged();
+        spnContacts.setAdapter(myAdapter);
     }
 
 }
