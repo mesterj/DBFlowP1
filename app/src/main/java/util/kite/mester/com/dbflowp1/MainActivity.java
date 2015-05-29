@@ -72,6 +72,7 @@ public class MainActivity extends Activity {
             case (R.id.btnSaveContact):
             Contact c = new Contact();
                 c.setNev(etContact.getText().toString());
+                c.save();
                 ArrayList<Telefonszam> telefonszamList = new ArrayList<Telefonszam>();
                 Telefonszam t1 = new Telefonszam();
                 String tszam = etTelefon.getText().toString();
@@ -83,7 +84,7 @@ public class MainActivity extends Activity {
                 }
                 else {
                 }
-                c.save();
+                c.update();
                 Toast.makeText(v.getContext(),"Az új contact száma: "+ c.getTelefonszamok().get(0),Toast.LENGTH_LONG).show();
                 reloadAdapter();
                 break;
@@ -91,14 +92,16 @@ public class MainActivity extends Activity {
                 Long itempos = spnContacts.getItemIdAtPosition(spnContacts.getSelectedItemPosition());
                 Contact cleker = new Select().from(Contact.class).where(Condition.column(Contact$Table.ID).is(itempos+1)).querySingle();
                 Log.i("DBFLOW.TALALATNEVE:",cleker.getNev());
-                // Itt lesz az igazi adatbĂˇzisbĂłl valĂł telefonszĂˇm visszakĂ©rĂ©s
+                // Itt lesz az igazi adatbázisból való telefonszám visszakérés
+                List<Telefonszam> seleceSzamok = new Select().from(Telefonszam.class).queryList();
+                Log.i("DBFLOW.SZAMOK"," FROM DATABASE "+ seleceSzamok.size());
                 List<Telefonszam> contactSzamok = cleker.getTelefonszamok();
                 for(Telefonszam t: contactSzamok){
                     Log.i("DBFLOW.SZAMOK",t.toString());
                 }
 
                 if (contactSzamok!=null) {
-                    //Toast.makeText(v.getContext(), "vaA telefonszĂˇm: "+ contactSzamok.get(0),Toast.LENGTH_LONG).show();
+                    //Toast.makeText(v.getContext(), "A telefonszám: "+ contactSzamok.get(0),Toast.LENGTH_LONG).show();
                     Toast.makeText(v.getContext(),"valami",Toast.LENGTH_LONG).show();
                     break;
                 }

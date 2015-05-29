@@ -1,13 +1,14 @@
 package util.kite.mester.com.dbflowp1;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.Database;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
+
+import java.util.ArrayList;
 
 /**
  * Created by Joco on 2015.04.26..
@@ -63,5 +64,15 @@ public class Telefonszam extends BaseModel {
     @Override
     public String toString() {
         return szam;
+    }
+
+    public void addToContact(Contact contact){
+        Long contId = contact.getId();
+        ArrayList<Contact> contactList = new ArrayList<>();
+        contactList.add(contact);
+        ForeignKeyContainer<Contact> foreignKeyContainer = new ForeignKeyContainer<Contact>(Contact.class);
+//        foreignKeyContainer.
+//        this.setContact(contactList);
+        this.save();
     }
 }
