@@ -71,7 +71,7 @@ public class Telefonszam extends BaseModel {
         ArrayList<Contact> contactList = new ArrayList<>();
         contactList.add(contact);
         ForeignKeyContainer<Contact> foreignKeyContainer = new ForeignKeyContainer<Contact>(Contact.class);
-//        foreignKeyContainer.
+        foreignKeyContainer.setModel(contact);
 //        this.setContact(contactList);
         this.save();
     }
