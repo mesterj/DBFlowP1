@@ -30,9 +30,9 @@ public class Telefonszam extends BaseModel {
             saveForeignKeyModel = false)
     ForeignKeyContainer<Contact> contact;
 
-    // A számok mentése egyetlen formában történhet: +36(illetve ország előhívó) 52555555 illetve mobil száoknál +36301234567
-    // Mindegy milyen formában írja be valaki, jó formában kell elmenteni
-    // Ha + vagy 00 taggal kezdődik és nem 36-al folytatódik akkor ellenörzés és átalakítás nélkül elmentem a számot.
+    // A szĂˇmok mentĂ©se egyetlen formĂˇban tĂ¶rtĂ©nhet: +36(illetve orszĂˇg elĹ‘hĂ­vĂł) 52555555 illetve mobil szĂˇoknĂˇl +36301234567
+    // Mindegy milyen formĂˇban Ă­rja be valaki, jĂł formĂˇban kell elmenteni
+    // Ha + vagy 00 taggal kezdĹ‘dik Ă©s nem 36-al folytatĂłdik akkor ellenĂ¶rzĂ©s Ă©s ĂˇtalakĂ­tĂˇs nĂ©lkĂĽl elmentem a szĂˇmot.
     public void setSzam(String szam) {
         if ((szam.substring(0).equals("+")) || (szam.substring(0, 1).equals("00"))) {
             this.szam = szam;
