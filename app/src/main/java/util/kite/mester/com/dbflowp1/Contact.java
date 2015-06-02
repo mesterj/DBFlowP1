@@ -29,7 +29,7 @@ public class Contact extends BaseModel {
 
     @OneToMany(methods = {OneToMany.Method.ALL})
     public List<Telefonszam> getTelefonszamok() {
-        if(telefonszamok == null){
+        if (telefonszamok == null) {
             telefonszamok = new Select().from(Telefonszam.class)
                     .where(Condition.column(Telefonszam$Table.CONTACT_CONTACT_ID).is(id))
                     .queryList();
@@ -60,6 +60,6 @@ public class Contact extends BaseModel {
 
     @Override
     public String toString() {
-        return  nev;
+        return nev;
     }
 }

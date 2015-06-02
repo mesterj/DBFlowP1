@@ -27,12 +27,12 @@ public class Telefonszam extends BaseModel {
     @ForeignKey(references = {@ForeignKeyReference(columnName = "contact_id",
             columnType = Long.class,
             foreignColumnName = "id")},
-            saveForeignKeyModel = false)
+            saveForeignKeyModel = true)
     ForeignKeyContainer<Contact> contact;
 
-    // A szĂˇmok mentĂ©se egyetlen formĂˇban tĂ¶rtĂ©nhet: +36(illetve orszĂˇg elĹ‘hĂ­vĂł) 52555555 illetve mobil szĂˇoknĂˇl +36301234567
-    // Mindegy milyen formĂˇban Ă­rja be valaki, jĂł formĂˇban kell elmenteni
-    // Ha + vagy 00 taggal kezdĹ‘dik Ă©s nem 36-al folytatĂłdik akkor ellenĂ¶rzĂ©s Ă©s ĂˇtalakĂ­tĂˇs nĂ©lkĂĽl elmentem a szĂˇmot.
+    // A számok mentése egyetlen formában történhet: +36(illetve ország előhívó) 52555555 illetve mobil számoknál +36301234567
+    // Mindegy milyen formában írja be valaki, jó formában kell elmenteni
+    // Ha + vagy 00 taggal kezdódik és nem 36-al folytatódik akkor ellenőrzés és átalakítás nélkül elmentem a számot.
     public void setSzam(String szam) {
         if ((szam.substring(0).equals("+")) || (szam.substring(0, 1).equals("00"))) {
             this.szam = szam;
@@ -63,16 +63,14 @@ public class Telefonszam extends BaseModel {
 
     @Override
     public String toString() {
-        return szam;
+        return "Szám: " + getSzam() + " A kontaktja:  "  + getContact();
     }
 
     public void addToContact(Contact contact){
-        Long contId = contact.getId();
-        ArrayList<Contact> contactList = new ArrayList<>();
-        contactList.add(contact);
-        ForeignKeyContainer<Contact> foreignKeyContainer = new ForeignKeyContainer<Contact>(Contact.class);
-        foreignKeyContainer.setModel(contact);
+        ForeignKeyContainer<Contact> foreignKeyContainer = getContact();
+        foreignKeyContainer.put(Telefonszam$Table.CONTACT_CONTACT_ID,contact);
+        //foreignKeyContainer.setModel(contact);
 //        this.setContact(contactList);
-        this.save();
+//        this.save();
     }
 }

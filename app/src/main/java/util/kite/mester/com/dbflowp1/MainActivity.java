@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("DBFLOW.MAINACTIVITY: ","STARTED");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         spnContacts = (Spinner) findViewById(R.id.spnContact);
@@ -73,24 +75,34 @@ public class MainActivity extends Activity {
             Contact c = new Contact();
                 c.setNev(etContact.getText().toString());
                 c.save();
-                ArrayList<Telefonszam> telefonszamList = new ArrayList<Telefonszam>();
+               // ArrayList<Telefonszam> telefonszamList = new ArrayList<Telefonszam>();
                 Telefonszam t1 = new Telefonszam();
                 String tszam = etTelefon.getText().toString();
                 if(!tszam.equals(null)){
                     t1.setSzam(tszam);
+                    //t1.addToContact(c);
+                    //t1.getContact().put(Telefonszam$Table.CONTACT_CONTACT_ID,c);// Ez a másik megoldás közvetlen mentéshez
+                    ForeignKeyContainer<Contact> fkc = new ForeignKeyContainer<Contact>(Contact.class);
+//                    fkc.put(Telefonszam$Table.CONTACT_CONTACT_ID,c);
+                    fkc.setModel(c);
+                    t1.setContact(fkc);
+
                     t1.save();
-                    telefonszamList.add(t1);
-                    c.setTelefonszamok(telefonszamList);
+                    //t1.getContact().setModel(c);
+                    //t1.update();
+
                 }
                 else {
+                    Log.i("DBFLOW.SAVECONTACT","Tszam was null");
                 }
-                c.update();
-                Toast.makeText(v.getContext(),"Az új contact száma: "+ c.getTelefonszamok().get(0),Toast.LENGTH_LONG).show();
+                //c.update();
+                Log.i("DBFLOW.SAVECONTACT", "Toast come");
+                //Toast.makeText(v.getContext(),"Az új contact száma: "+ c.getTelefonszamok().get(0),Toast.LENGTH_LONG).show();
                 reloadAdapter();
                 break;
             case (R.id.btnTelefonszam):
                 Long itempos = spnContacts.getItemIdAtPosition(spnContacts.getSelectedItemPosition());
-                Contact cleker = new Select().from(Contact.class).where(Condition.column(Contact$Table.ID).is(itempos+1)).querySingle();
+                Contact cleker = new Select().from(Contact.class).where(Condition.column(Contact$Table.ID).is(itempos + 1)).querySingle();
                 Log.i("DBFLOW.TALALATNEVE:",cleker.getNev());
                 // Itt lesz az igazi adatbázisból való telefonszám visszakérés
                 List<Telefonszam> seleceSzamok = new Select().from(Telefonszam.class).queryList();
@@ -100,6 +112,9 @@ public class MainActivity extends Activity {
                     Log.i("DBFLOW.SZAMOK",t.toString());
                 }
 
+                for (Telefonszam t:seleceSzamok){
+                    Log.i("DBFLOW.Telefon.elemek",t.toString());
+                }
                 if (contactSzamok!=null) {
                     //Toast.makeText(v.getContext(), "A telefonszám: "+ contactSzamok.get(0),Toast.LENGTH_LONG).show();
                     Toast.makeText(v.getContext(),"valami",Toast.LENGTH_LONG).show();
